@@ -9,7 +9,7 @@ namespace Inventory_Management_System_PC.Model
 {
     public class InventoryDBContext : DbContext
     {
-        public InventoryDBContext() : base("name=ConStr")
+        public InventoryDBContext() : base("ConStr")
         {
         }
         public DbSet<Item> Items { get; set; }
