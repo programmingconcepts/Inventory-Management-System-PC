@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventory_Management_System_PC.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,18 @@ namespace Inventory_Management_System_PC
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void BtnItems_Click(object sender, RoutedEventArgs e)
+        {
+            ItemsView view = new ItemsView();
+            view.ShowDialog();
+        }
+
+        private void BtnSuppliers_Click(object sender, RoutedEventArgs e)
+        {
+            SuppliersView view = new SuppliersView();
+            view.ShowDialog();
         }
     }
 }

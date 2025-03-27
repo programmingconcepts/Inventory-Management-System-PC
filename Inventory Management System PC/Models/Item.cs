@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace Inventory_Management_System_PC.Model
+namespace Inventory_Management_System_PC.Models
 {
     public class Item
     {

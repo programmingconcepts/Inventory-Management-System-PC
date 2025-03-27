@@ -1,4 +1,4 @@
-﻿using Inventory_Management_System_PC.Model;
+﻿using Inventory_Management_System_PC.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
