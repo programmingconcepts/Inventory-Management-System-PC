@@ -24,6 +24,9 @@
                     <GridViewColumn Header="Price"
                                     DisplayMemberBinding="{Binding Price}"
                                     Width="80" />
+                    <GridViewColumn Header="Stock"
+                                    DisplayMemberBinding="{Binding StockValue}"
+                                    Width="80" />
                     <GridViewColumn Header="Unit"
                                     DisplayMemberBinding="{Binding MeasuringUnit}"
                                     Width="80" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Management_System_PC.Models
 {
@@ -25,5 +26,8 @@ namespace Inventory_Management_System_PC.Models
         public string MeasuringUnit { get; set; }
 
         public double ReOrderLevel { get; set; } = 10;
+
+        [NotMapped]
+        public double StockValue { get; set; }
     }
 }

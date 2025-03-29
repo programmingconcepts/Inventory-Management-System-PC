@@ -1,0 +1,118 @@
+﻿<Window x:Class="Inventory_Management_System_PC.Views.AddSupplyView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Inventory_Management_System_PC.Views"
+        mc:Ignorable="d"
+        Title="Add New Supply" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Supplier Selection -->
+            <RowDefinition Height="Auto" />
+            <!-- Item Entry -->
+            <RowDefinition Height="*" />
+            <!-- DataGrid -->
+            <RowDefinition Height="Auto" />
+            <!-- Total and Save Button -->
+        </Grid.RowDefinitions>
+
+        <!-- Row 1: Supplier Selection -->
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="0"
+                    Margin="0,0,0,10">
+            <TextBlock Text="Supplier:"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Width="80" />
+            <ComboBox ItemsSource="{Binding Suppliers}"
+                      SelectedItem="{Binding SelectedSupplier}"
+                      DisplayMemberPath="Name"
+                      IsEditable="True"
+                      StaysOpenOnEdit="True"
+                      IsTextSearchEnabled="True"
+                      Width="200" />
+        </StackPanel>
+
+        <!-- Row 2: Item Entry -->
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    Margin="0,0,0,10">
+            <TextBlock Text="Item:"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Width="80" />
+            <ComboBox ItemsSource="{Binding Items}"
+                      SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
+                      DisplayMemberPath="Name"
+                      IsEditable="True"
+                      StaysOpenOnEdit="True"
+                      IsTextSearchEnabled="True"
+                      Width="150"
+                      Margin="0,0,10,0" />
+
+            <TextBlock Text="Quantity "
+                       FontWeight="Bold"
+                       VerticalAlignment="Center" />
+            <TextBlock Text="{Binding MeasuringUnitText}"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Width="50"/>
+            <TextBox Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="TextBox_GotFocus"
+                     LostFocus="TextBox_LostFocus"
+                     Width="80"
+                     Margin="0,0,10,0" />
+
+            <TextBlock Text="Purchase Price:"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Width="100" />
+            <TextBox Text="{Binding PurchasePrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="TextBox_GotFocus"
+                     LostFocus="TextBox_LostFocus"
+                     Width="80" />
+
+            <Button Content="Add Item"
+                    Command="{Binding AddSupplyDetailCommand}" />
+        </StackPanel>
+
+        <!-- Row 3: DataGrid for Added Items -->
+        <DataGrid Grid.Row="2"
+                  ItemsSource="{Binding SupplyDetails}"
+                  AutoGenerateColumns="False"
+                  Margin="0,0,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Item"
+                                    Binding="{Binding Item.Name}"
+                                    Width="*" />
+                <DataGridTextColumn Header="Quantity"
+                                    Binding="{Binding Quantity}"
+                                    Width="80" />
+                <DataGridTextColumn Header="Price"
+                                    Binding="{Binding PurchasePrice}"
+                                    Width="100" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Row 4: Total Supply Charges and Save Button -->
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3"
+                    HorizontalAlignment="Right">
+            <TextBlock Text="Total Supply Charges:"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center" />
+            <TextBlock Text="{Binding TotalAmount}"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Foreground="DarkGreen"
+                       Margin="10,0" />
+            <Button Content="Save"
+                    Command="{Binding SaveCommand}"
+                    Width="100"
+                    Margin="20,0,0,0" />
+        </StackPanel>
+
+    </Grid>
+</Window>

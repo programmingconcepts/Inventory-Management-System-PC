@@ -37,5 +37,11 @@ namespace Inventory_Management_System_PC
             SuppliersView view = new SuppliersView();
             view.ShowDialog();
         }
+
+        private void BtnAddSupply_Click(object sender, RoutedEventArgs e)
+        {
+            AddSupplyView view = new AddSupplyView();
+            view.ShowDialog();
+        }
     }
 }

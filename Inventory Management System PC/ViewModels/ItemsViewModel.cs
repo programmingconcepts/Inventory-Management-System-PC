@@ -179,7 +179,14 @@ namespace Inventory_Management_System_PC.ViewModels
         public void LoadItems()
         {
             InventoryDBContext db = new InventoryDBContext();
-            Items = new ObservableCollection<Item>(db.Items);
+            Items = new ObservableCollection<Item>(
+                db.Items.ToList()
+                .Select(i =>
+                {
+                    i.StockValue = db.Stocks.Where(s => s.ItemId == i.ItemId).Select(s => s.StockValue).DefaultIfEmpty(0).Sum();
+                    return i;
+                }
+                ).ToList());
         }
 
         private void ClearFields()
