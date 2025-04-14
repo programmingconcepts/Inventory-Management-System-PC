@@ -74,15 +74,26 @@
     <Compile Include="Migrations\202503241717000_SupplierSupplyStock.Designer.cs">
       <DependentUpon>202503241717000_SupplierSupplyStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202504041312466_InvoiceCustomer.cs" />
+    <Compile Include="Migrations\202504041312466_InvoiceCustomer.Designer.cs">
+      <DependentUpon>202504041312466_InvoiceCustomer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\InvoiceItem.cs" />
     <Compile Include="Models\Stock.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Models\Supply.cs" />
     <Compile Include="Models\SupplyDetail.cs" />
+    <Compile Include="ViewModels\AddInvoiceViewModel.cs" />
     <Compile Include="ViewModels\AddSupplyViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\SuppliersViewModel.cs" />
+    <Compile Include="Views\AddInvoiceView.xaml.cs">
+      <DependentUpon>AddInvoiceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddSupplyView.xaml.cs">
       <DependentUpon>AddSupplyView.xaml</DependentUpon>
     </Compile>
@@ -104,6 +115,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AddInvoiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddSupplyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -138,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503241717000_SupplierSupplyStock.resx">
       <DependentUpon>202503241717000_SupplierSupplyStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202504041312466_InvoiceCustomer.resx">
+      <DependentUpon>202504041312466_InvoiceCustomer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

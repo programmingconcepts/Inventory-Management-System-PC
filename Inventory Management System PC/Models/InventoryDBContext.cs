@@ -22,6 +22,12 @@ namespace Inventory_Management_System_PC.Models
 
         public DbSet<Stock> Stocks { get; set; }
 
+        public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<Invoice> Invoices { get; set; }
+
+        public DbSet<InvoiceItem> InvoiceItems { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Stock>()
@@ -52,6 +58,24 @@ namespace Inventory_Management_System_PC.Models
                 .HasRequired(s => s.Supplier)
                 .WithMany()
                 .HasForeignKey(sp => sp.SupplierId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Invoice>()
+                .HasRequired(i => i.Customer)
+                .WithMany()
+                .HasForeignKey(c => c.CustomerId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<InvoiceItem>()
+                .HasRequired(ii => ii.Invoice)
+                .WithMany()
+                .HasForeignKey(i => i.InvoiceId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<InvoiceItem>()
+                .HasRequired(ii => ii.Item)
+                .WithMany()
+                .HasForeignKey(i => i.ItemId)
                 .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
