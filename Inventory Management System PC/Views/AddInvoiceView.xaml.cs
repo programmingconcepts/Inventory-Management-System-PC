@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Inventory_Management_System_PC.ViewModels;
 
 namespace Inventory_Management_System_PC.Views
 {
@@ -19,9 +20,30 @@ namespace Inventory_Management_System_PC.Views
     /// </summary>
     public partial class AddInvoiceView : Window
     {
+        public AddInvoiceViewModel viewModel;
         public AddInvoiceView()
         {
             InitializeComponent();
+            viewModel = new AddInvoiceViewModel();
+            this.DataContext = viewModel;
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Text == "0")
+            {
+                tb.Text = "";
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Text == "")
+            {
+                tb.Text = "0";
+            }
         }
     }
 }

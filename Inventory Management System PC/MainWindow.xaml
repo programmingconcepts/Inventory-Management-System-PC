@@ -45,5 +45,14 @@
                 Foreground="White"
                 Click="BtnAddSupply_Click"
                 Margin="5" />
+
+        <Button x:Name="BtnAddInvoice"
+                Content="Add Invoice"
+                Grid.Row="0"
+                Grid.Column="2"
+                Background="SteelBlue"
+                Foreground="White"
+                Click="BtnAddInvoice_Click"
+                Margin="5" />
     </Grid>
 </Window>

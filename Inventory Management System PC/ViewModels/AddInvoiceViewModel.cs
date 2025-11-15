@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Inventory_Management_System_PC.Commands;
 using Inventory_Management_System_PC.Models;
@@ -102,7 +105,15 @@ namespace Inventory_Management_System_PC.ViewModels
             set
             {
                 _selectedItem = value;
-                OnPropertyChanged(nameof(SelectedItem));
+                if(value != null)
+                {
+                    SalePrice = value.Price;
+                }
+                else
+                {
+                    SalePrice = 0;
+                }
+                    OnPropertyChanged(nameof(SelectedItem));
             }
         }
 
@@ -145,13 +156,26 @@ namespace Inventory_Management_System_PC.ViewModels
             get { return _invoiceItems; }
             set
             {
+                if(InvoiceItems != null)
+                {
+                    InvoiceItems.CollectionChanged -= InvoiceItems_CollectionChanged;
+                }
+
                 _invoiceItems = value;
+
                 if(value != null)
                 {
-                    UpdateTotal();
+                    InvoiceItems.CollectionChanged += InvoiceItems_CollectionChanged;
                 }
+
+                UpdateTotal();
                 OnPropertyChanged(nameof(InvoiceItems));
             }
+        }
+
+        private void InvoiceItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateTotal();
         }
 
         private double _extraCharges;
@@ -161,6 +185,7 @@ namespace Inventory_Management_System_PC.ViewModels
             set
             {
                 _extraCharges = value;
+                UpdateTotal();
                 OnPropertyChanged(nameof(ExtraCharges));
             }
         }
@@ -172,6 +197,7 @@ namespace Inventory_Management_System_PC.ViewModels
             set
             {
                 _discount = value;
+                UpdateTotal();
                 OnPropertyChanged(nameof(Discount));
             }
         }
@@ -183,6 +209,7 @@ namespace Inventory_Management_System_PC.ViewModels
             set
             {
                 _paidAmount = value;
+                UpdateTotal();
                 OnPropertyChanged(nameof(PaidAmount));
             }
         }
@@ -204,6 +231,7 @@ namespace Inventory_Management_System_PC.ViewModels
             if (InvoiceItems != null)
             {
                 total += InvoiceItems.Sum(i => i.Quantity * i.SalePrice) - Discount + ExtraCharges;
+                InvoiceTotal = total;
             }
         }
 
@@ -247,11 +275,16 @@ namespace Inventory_Management_System_PC.ViewModels
         {
             InvoiceItem invoiceItem = new InvoiceItem
             {
+                Item = SelectedItem,
                 ItemId = SelectedItem.ItemId,
                 Quantity = Quantity,
                 SalePrice = SalePrice
             };
 
+            if (InvoiceItems == null)
+            {
+                InvoiceItems = new ObservableCollection<InvoiceItem>();
+            }
             InvoiceItems.Add(invoiceItem);
         }
 
@@ -275,6 +308,78 @@ namespace Inventory_Management_System_PC.ViewModels
                 db.SaveChanges();
                 SelectedCustomer = customer;
             }
+
+
+            var transaction = db.Database.BeginTransaction();
+
+            try
+            {
+
+                var invoice = new Invoice
+                {
+                    CustomerId = SelectedCustomer.CustomerId,
+                    Date = DateTime.Now,
+                    ExtraCharges = Convert.ToDecimal(ExtraCharges),
+                    Discount = Convert.ToDecimal(Discount),
+                    PaidAmount = Convert.ToDecimal(PaidAmount)
+                };
+
+                db.Invoices.Add(invoice);
+                db.SaveChanges();
+
+                foreach (var item in InvoiceItems)
+                {
+                    var invoiceItem = new InvoiceItem
+                    {
+                        InvoiceId = invoice.InvoiceId,
+                        ItemId = item.ItemId,
+                        Quantity = item.Quantity,
+                        SalePrice = item.SalePrice
+                    };
+                    db.InvoiceItems.Add(invoiceItem);
+
+                    
+
+                    double qtyToDeduct = item.Quantity;
+
+                    while (qtyToDeduct > 0)
+                    {
+                        var stock = db.Stocks.FirstOrDefault(s => s.ItemId == item.ItemId && s.StockValue > 0);
+
+                        if (stock != null)
+                        {
+                            if (stock.StockValue >= item.Quantity)
+                            {
+                                stock.StockValue -= item.Quantity;
+                                qtyToDeduct = 0;
+                            }
+                            else
+                            {
+                                qtyToDeduct -= stock.StockValue;
+                                stock.StockValue = 0;
+                            }
+                        }
+                        db.Entry(stock).State = System.Data.Entity.EntityState.Modified;
+                    }
+
+                    
+                }
+                db.SaveChanges();
+
+                transaction.Commit();
+
+                MessageBox.Show("Invoice Saved Successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                transaction.Rollback();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
         }
 
     }
