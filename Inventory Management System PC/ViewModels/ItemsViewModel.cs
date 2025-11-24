@@ -131,7 +131,7 @@ namespace Inventory_Management_System_PC.ViewModels
 
         private bool CanSaveItem(object obj)
         {
-            return !string.IsNullOrEmpty(Name) && Price > 0;
+            return !string.IsNullOrEmpty(Name) && Price > 0 && SessionManager.LoggedInUser.PermissionLevel > 1;
         }
 
         private void SaveItem(object obj)
@@ -155,7 +155,7 @@ namespace Inventory_Management_System_PC.ViewModels
 
         private bool CanUpdateItem(object obj)
         {
-            return SelectedItem != null && !string.IsNullOrEmpty(Name) && Price > 0;
+            return SelectedItem != null && !string.IsNullOrEmpty(Name) && Price > 0 && SessionManager.LoggedInUser.PermissionLevel > 1;
         }
 
         private void UpdateItem(object obj)

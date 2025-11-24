@@ -91,7 +91,7 @@ namespace Inventory_Management_System_PC.ViewModels
 
         private bool CanSaveSupplier(object obj)
         {
-            return !string.IsNullOrEmpty(Name);
+            return !string.IsNullOrEmpty(Name) && SessionManager.LoggedInUser.PermissionLevel > 1;
         }
 
         private void SaveSupplier(object obj)
@@ -113,7 +113,7 @@ namespace Inventory_Management_System_PC.ViewModels
 
         private bool CanUpdateSupplier(object obj)
         {
-            return SelectedSupplier != null && !string.IsNullOrEmpty(Name);
+            return SelectedSupplier != null && !string.IsNullOrEmpty(Name) && SessionManager.LoggedInUser.PermissionLevel > 1;
         }
 
         private void UpdateSupplier(object obj)

@@ -28,6 +28,8 @@ namespace Inventory_Management_System_PC.Models
 
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Stock>()
